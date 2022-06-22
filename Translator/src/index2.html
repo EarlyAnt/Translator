@@ -14,30 +14,73 @@
 </head>
 
 <body>
-    <div id="languages">
+    <!-- <div id="languages">
         <ul>
             <li>en</li>
             <li>zh-CN</li>
         </ul>
-    </div>
+    </div> -->
 
-    <div id="languageBlock">
-        <p id="txtContext">相信一切都是最好的安排！</p>
-        <!-- <p id="txtContext">complete</p> -->
+    <div>
+        <p id="txtOne" style="font-size:20px;">冬练三九夏练三伏！</p>
+        <p id="txtTranslateOne" style="font-style:italic;color:#1eb9e9;">翻译结果-></p>
+
+        <button id="btnTranslateOne">翻译一个</button>
     </div>
 
     <div>
-        <button id="btnTranslate">翻译</button>
+        <p id="txtMulti" style="font-size:20px;">健康, 平安, 幸福, 快乐, 如意</p>
+        <p id="txtTranslateMulti" style="font-style:italic;color:#1eb9e9;">翻译结果-></p>
+
+        <button id="btnTranslateMulti">翻译多个</button>
     </div>
 
     <script type="text/javascript">
-        document.getElementById("btnTranslate").addEventListener("click", () => {
-            translate();
+        console.log(document.getElementById("btnTranslateOne"));
+        document.getElementById("btnTranslateOne").addEventListener("click", () => {
+            translate_one();
         });
 
-        async function translate() {
-            console.log("++++++++");
+        console.log(document.getElementById("btnTranslateMulti"));
+        document.getElementById("btnTranslateMulti").addEventListener("click", () => {
+            translate_multi();
+        });
+
+        async function translate_one() {
+            console.log("++++++++ translate_one");
             let result = await callApi({
+                path: 'translate_one',
+                // method: "GET",
+                method: "POST",
+                // headers: {
+                //     // "Content-Type": "application/x-www-form-urlencoded",
+                //     "Content-Type": "application/json",
+                //     // "Content-Type": "multipart/form-data",
+                //     // "Content-Type": "text/plain",
+
+                //     'Access-Control-Allow-Origin': "*",
+                //     'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE",
+                //     'Access-Control-Allow-Credentials': 'true',
+                // },
+                dataType: "json",
+                data: {
+                    content: '冬练三九夏练三伏！',
+                    src: "zh-cn",
+                    dest: "en"
+                }
+            }).then(response => response.json()).then(data => {
+                console.log(data);
+                document.getElementById("txtTranslateOne").innerText = "翻译结果->" + JSON.stringify(data);
+            });
+
+            console.log("++++");
+            // console.log(result);
+        }
+
+        async function translate_multi() {
+            console.log("++++++++ translate_multi");
+            let result = await callApi({
+                path: 'translate_multi',
                 // method: "GET",
                 method: "POST",
                 // headers: {
@@ -56,14 +99,18 @@
                     src: "zh-cn",
                     dest: "en"
                 }
-            }).then(response => response.json()).then(data => console.log(data));
+            }).then(response => response.json()).then(data => {
+                console.log(data);
+                document.getElementById("txtTranslateMulti").innerText = "翻译结果->" + JSON.stringify(data);
+            });
 
             console.log("++++");
-            console.log(result);
+            // console.log(result);
         }
 
         function getServerURL() {
-            return 'http://192.168.0.105:5550/translate_one';
+            return 'http://192.168.0.102:5550/';
+            // return "http://192.168.180.142:5550/";
         }
 
         async function callApi(params) {
@@ -72,7 +119,7 @@
             console.log("method: " + params.method + ", content: " + params.q)
 
             const res = await request({
-                url: getServerURL(),
+                url: getServerURL() + params.path,
                 method: params.method || "GET",
                 headers: params.headers || {},
                 data: params.data
