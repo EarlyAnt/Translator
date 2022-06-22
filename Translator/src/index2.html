@@ -38,14 +38,28 @@
         async function translate() {
             console.log("++++++++");
             let result = await callApi({
+                // method: "GET",
+                method: "POST",
+                // headers: {
+                //     // "Content-Type": "application/x-www-form-urlencoded",
+                //     "Content-Type": "application/json",
+                //     // "Content-Type": "multipart/form-data",
+                //     // "Content-Type": "text/plain",
+
+                //     'Access-Control-Allow-Origin': "*",
+                //     'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE",
+                //     'Access-Control-Allow-Credentials': 'true',
+                // },
+                dataType: "json",
                 data: {
                     content: ['健康', '平安', '幸福', '快乐', '如意'],
                     src: "zh-cn",
                     dest: "en"
                 }
-            });
+            }).then(response => response.json()).then(data => console.log(data));
 
-            print(result);
+            console.log("++++");
+            console.log(result);
         }
 
         function getServerURL() {
@@ -59,7 +73,7 @@
 
             const res = await request({
                 url: getServerURL(),
-                // method: params.method || "POST",
+                method: params.method || "GET",
                 headers: params.headers || {},
                 data: params.data
             })
@@ -109,15 +123,17 @@
 
             const res = await fetch(url, {
                 method: method,
-                mode: "no-cors",
-                // mode: "cors",
+                // mode: "no-cors",
+                mode: "cors",
                 body: body,
+                // body: JSON.stringify({
+                //     'name': '早起的蚂蚁123'
+                // }),
                 headers: headers,
             });
 
-            console.log("res: " + res.ok + ", data: " + res.msg + ", text: " + res.text() + ", json: " + res.json());
-            console.log(res);
-            // return await res.json();
+            // console.log("ok: " + res.ok + ", text: " + res.text() + ", json: " + res.json());
+            // console.log(res);
             return res;
         }
     </script>
