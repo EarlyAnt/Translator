@@ -1,0 +1,21 @@
+<html>
+
+<head>
+    <title>代理页面</title>
+
+    <script>
+        window.name = "This is proxy page!";
+
+        console.log("proxy page->search: " + window.location.search)
+        var rs = window.location.search.split('?').slice(1);
+        window.parent.getCallbackData(rs.toString().split('=').slice(1));
+    </script>
+</head>
+
+<body>
+    <div style="text-align:center;">
+        <p>代理页面</p>
+    </div>
+</body>
+
+</html>

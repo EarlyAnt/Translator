@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <title>google 翻译</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <style>
+        body {
+            font-size: 16;
+        }
+    </style>
+
+    <script src="https://www.google.com/jsapi?key=YOUR_GOOGLE_KEY"></script>
+    <script src="./js/libs/jquery.min.js"></script>
+    <script src="./js/libs/server.js"></script>
+</head>
+
+<body>
+    <div id="languages">
+        <!-- <p>
+            <a href="?lang=en" rel="en" onclick="toLang = 'en'">English</a> /
+            <a href="?lang=es" rel="es">Spanish</a> /
+            <a href="?lang=it" rel="it">Italian</a> /
+            <a href="?lang=fr" rel="fr">French</a>
+        </p> -->
+
+        <ul>
+            <li>en</li>
+            <li>zh-CN</li>
+        </ul>
+    </div>
+
+    <div id="languageBlock">
+        <p id="txtContext">相信一切都是最好的安排！</p>
+        <!-- <p id="txtContext">complete</p> -->
+    </div>
+
+    <div>
+        <button id="btnTranslate">翻译</button>
+    </div>
+
+    <script type="text/javascript">
+        var lang = "en";
+        var toLang = "zh-CN";
+
+        window.onload = function () {
+            document.getElementById("btnTranslate").addEventListener("click", () => {
+                console.log("ok");
+                translate();
+            });
+        }
+
+        async function translate() {
+            let content = document.getElementById("txtContext").innerText;
+            let result = await SERVER.callApi({
+                // method: "GET",
+                method: "POST",
+                headers: {
+                    // "Content-Type": "application/x-www-form-urlencoded",
+                    // "Content-Type": "application/json",
+                    // "Content-Type": "multipart/form-data",
+                    "Content-Type": "text/plain",
+
+                    'Access-Control-Allow-Origin': "*",
+                    'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE",
+                    'Access-Control-Allow-Credentials': 'true',
+                },
+                client: "dict-chrome-ex",
+                sl: "auto",
+                tl: lang,
+                q: content
+            })
+            console.log(result);
+            console.log(result.data);
+            // if (result.code == 20000) {
+            //     $.label_sn = result.data.label_sn;
+            // } else {
+            //     console.log("showLabel->label_type: " + result.data.label_type);
+            // }
+        }
+    </script>
+</body>
+
+</html>

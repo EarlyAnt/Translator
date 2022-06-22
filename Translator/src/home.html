@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <title>首页</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <style>
+        body {
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="text-align:center;">
+        <p>首页</p>
+        <button id="button">翻译</button><br />
+
+        <!-- <iframe id="iframe" style="display:none;"></iframe> -->
+        <iframe id="iframe"></iframe>
+    </div>
+
+    <script>
+        var state = 0;
+
+        var proxy = function (url, callback) {
+            console.log("state: " + state);
+            let iframe = document.getElementById("iframe");
+
+            if (state == 0) {
+                console.log("init iframe");
+                iframe.src = "./proxy.html?t=5";
+                state = 1;
+            }
+            else if (state == 1) {
+                iframe.src = url;
+            }
+        };
+
+        function translate() {
+            // 请求跨域b页面数据
+            proxy('https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=auto&tl=en&q=相信一切都是最好的安排！',
+                function (data) {
+                    alert(data);
+                    console("callback: " + data);
+                });
+        }
+
+        function getCallbackData(data) {
+            console.log("getCallbackData->data: " + data);
+        }
+
+        document.getElementById("button").addEventListener("click", () => {
+            console.log("button clicked");
+            translate();
+        });
+
+        translate();
+
+    </script>
+</body>
+
+</html>
