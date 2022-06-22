@@ -56,7 +56,7 @@
             // headers: headers,
         });
 
-        // console.log("res: " + res.ok + ", data: " + res.msg + ", formData: " + res.formData);
+        console.log("res: " + res.ok + ", data: " + res.msg + ", data: " + res.text());
         // return await res.json();
         return res;
     }
